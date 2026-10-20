@@ -1,0 +1,47 @@
+# ===== Zola 构建产物 =====
+public/
+
+# ===== 前端依赖 =====
+node_modules/
+
+# npm/yarn/pnpm 调试日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===== 生成文件说明（重要）=====
+# static/css/main.css（Tailwind 构建）与 static/search.json（脚本生成）
+# 是生成产物，但项目无 CI、部署依赖版本库内文件，因此保留提交、勿手改；
+# 修改样式后运行 npx @tailwindcss/cli 重建，增删文章后运行 scripts/gen-search-index.py
+
+# ===== 修改前快照备份 =====
+.backup/
+
+# ===== Agent 本地状态（会话/机器 id，不含可共享配置）=====
+.atomcode/
+
+# ===== macOS =====
+.DS_Store
+._*
+.AppleDouble
+.Spotlight-V100
+.Trashes
+
+# ===== Windows =====
+Thumbs.db
+Desktop.ini
+
+# ===== 编辑器 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.orig
+
+# ===== 日志与环境变量 =====
+*.log
+.env
+.env.*
+!.env.example

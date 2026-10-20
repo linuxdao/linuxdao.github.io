@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description }}{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <article>
+    <img src="{{ page.extra.image | default(value='/images/id-1.jpg') }}" alt="{{ page.title }}" class="w-full h-64 md:h-80 object-cover rounded-xl mb-6">
+    <h1 class="text-2xl md:text-3xl font-bold mb-4">{{ page.title }}</h1>
+    <div class="flex items-center gap-4 text-sm text-muted mb-6 flex-wrap">
+      <span><i class="fa fa-user-o mr-1"></i>{{ page.extra.author | default(value="编辑部") }}</span>
+      <span><i class="fa fa-clock-o mr-1"></i>{{ page.date | date(format="%Y-%m-%d") }}</span>
+      {% for tag in page.taxonomies.tags | default(value=[]) %}
+      <a href="/search/?q={{ tag | urlencode }}" class="text-xs px-2 py-0.5 bg-gray-100 hover:bg-primary hover:text-white rounded transition">{{ tag }}</a>
+      {% endfor %}
+    </div>
+
+    <div class="prose-content leading-relaxed space-y-4">
+      {{ page.content | safe }}
+    </div>
+  </article>
+
+  <div class="mt-10 pt-6 border-t border-gray-200 flex justify-between text-sm">
+    {% if page.earlier %}
+    <a href="{{ page.earlier.permalink }}" class="text-muted hover:text-primary max-w-[48%] text-ellipsis-2">
+      <i class="fa fa-angle-left mr-1"></i>{{ page.earlier.title }}
+    </a>
+    {% else %}<span></span>{% endif %}
+    {% if page.later %}
+    <a href="{{ page.later.permalink }}" class="text-muted hover:text-primary max-w-[48%] text-ellipsis-2 text-right">
+      {{ page.later.title }}<i class="fa fa-angle-right ml-1"></i>
+    </a>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

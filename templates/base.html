@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+
+  <!-- Tailwind CSS 本地构建（源文件 static/css/input.css） -->
+  <link rel="stylesheet" href="/css/main.css">
+  <!-- Font Awesome 本地化（npm 包 font-awesome@4.7.0，勿手改） -->
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <!-- RSS 订阅源自动发现 -->
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml') }}">
+</head>
+<body class="bg-gray-50 text-dark">
+  <!-- 导航栏 -->
+  <header class="sticky top-0 z-50 bg-white shadow-sm">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-8">
+          <a href="/" class="text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-primary">{{ config.title }}</a>
+          <!-- 桌面导航 -->
+          <nav class="hidden md:flex gap-6 text-sm">
+            {% set current_path = current_path | default(value="") %}
+            {% for item in config.extra.menu %}
+            {% set is_active = current_path == item.url or current_path == item.url ~ "/" %}
+            <a href="{{ item.url }}"
+               class="{% if is_active %}text-primary font-medium border-b-2 border-primary py-1{% else %}hover:text-primary transition-colors{% endif %}">
+              {{ item.name }}
+            </a>
+            {% endfor %}
+          </nav>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative hidden sm:block">
+            <input type="text" id="searchInput" placeholder="搜索文章..." class="bg-light rounded-full pl-9 pr-4 py-1.5 text-sm w-56 focus:outline-none focus:ring-1 focus:ring-primary">
+            <i class="fa fa-search absolute left-3 top-2 text-muted"></i>
+          </div>
+          <a href="/atom.xml" class="hidden md:block px-4 py-1.5 bg-primary text-white rounded-full text-sm hover:bg-primary/90 transition">RSS</a>
+          <button id="menuToggle" class="md:hidden text-xl" aria-label="打开菜单">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <!-- 移动端菜单 -->
+      <nav id="mobileMenu" class="hidden md:hidden pb-4 space-y-1">
+        {% for item in config.extra.menu %}
+        <a href="{{ item.url }}" class="block px-2 py-2 rounded hover:bg-light hover:text-primary transition">{{ item.name }}</a>
+        {% endfor %}
+        <a href="/search/" class="block px-2 py-2 rounded hover:bg-light hover:text-primary transition">搜索</a>
+        <a href="/atom.xml" class="block px-2 py-2 rounded hover:bg-light hover:text-primary transition">RSS 订阅</a>
+      </nav>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white mt-10 py-8">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-6">
+        <div>
+          <h4 class="font-semibold mb-3">{{ config.title }}</h4>
+          <p class="text-gray-400 text-sm">{{ config.description }}</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">栏目</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            {% for item in config.extra.menu %}
+            {% if not loop.first %}
+            <li><a href="{{ item.url }}" class="hover:text-white transition">{{ item.name }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">发现</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li><a href="/search/" class="hover:text-white transition">搜索</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">联系</h4>
+          <ul class="space-y-2 text-gray-400 text-sm">
+            <li><a href="/atom.xml" class="hover:text-white transition">RSS 订阅</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-6 pt-6 text-center text-gray-500 text-sm">
+        © 2026 {{ config.title }} | Powered by Zola & Tailwind CSS 4
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

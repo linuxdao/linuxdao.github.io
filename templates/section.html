@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} - {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description }}{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold mb-2">{{ section.title }}</h1>
+    <p class="text-muted">{{ section.description }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    {% for page in section.pages %}
+    <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+      <a href="{{ page.permalink }}">
+        <img src="{{ page.extra.image | default(value='/images/id-1.jpg') }}" alt="{{ page.title }}" class="w-full h-40 object-cover">
+      </a>
+      <div class="p-4">
+        <div class="flex gap-2 mb-2 flex-wrap">
+          {% for tag in page.taxonomies.tags | default(value=[]) %}
+          <a href="/search/?q={{ tag | urlencode }}" class="text-xs px-1.5 py-0.5 bg-gray-100 hover:bg-primary hover:text-white rounded transition">{{ tag }}</a>
+          {% endfor %}
+        </div>
+        <h2 class="font-semibold hover:text-primary transition">
+          <a href="{{ page.permalink }}">{{ page.title }}</a>
+        </h2>
+        <p class="text-muted text-sm mt-2 text-ellipsis-2">{{ page.description }}</p>
+        <div class="flex items-center justify-between mt-3 text-xs text-muted">
+          <span>{{ page.date | date(format="%m-%d") }}</span>
+          <span><i class="fa fa-user-o mr-1"></i>{{ page.extra.author | default(value="编辑部") }}</span>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% if section.pages | length == 0 %}
+  <p class="text-muted">本栏目暂无文章。</p>
+  {% endif %}
+</main>
+{% endblock %}

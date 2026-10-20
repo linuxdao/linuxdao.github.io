@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}标签 - {{ config.title }}{% endblock title %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <h1 class="text-2xl font-bold mb-6">全部标签</h1>
+  <div class="flex flex-wrap gap-3">
+    {% for term in terms %}
+    <a href="{{ term.permalink }}" class="px-3 py-1 bg-gray-100 hover:bg-primary hover:text-white rounded-full text-sm transition">
+      {{ term.name }}<span class="text-xs opacity-60 ml-1">{{ term.page_count }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</main>
+{% endblock content %}

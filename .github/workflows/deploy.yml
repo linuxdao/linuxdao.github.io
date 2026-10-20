@@ -1,0 +1,40 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+# 同一时间只保留一次部署，避免新旧构建交叉发布
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 安装与本地一致的 zola 版本，避免模板行为差异
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.23.6
+
+      # 说明：static/css/main.css 与 static/search.json 已按项目约定提交在版本库，
+      # 构建仅需 zola；本地改动样式/文章后记得先运行 README 中的两条重建命令再 push。
+      # 前置条件：config.toml 的 base_url 必须已是真实 Pages 地址。
+      - name: Build site
+        run: zola build
+
+      # 把 public/ 以孤儿分支方式发布到 gh-pages（每次部署单提交，无历史膨胀）
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "deploy: ${{ github.sha }}"

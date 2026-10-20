@@ -1,0 +1,41 @@
+base_url = "https://example.com/"
+title = "资讯快报"
+description = "面向开发者的技术资讯站点，分享前端、网络、开源与AI内容"
+default_language = "zh"
+
+# 编译选项
+compile_sass = false
+# 内置搜索不支持中文（brew 版未编译 indexing-zh），搜索用 scripts/gen-search-index.py + Fuse.js 实现
+build_search_index = false
+generate_feeds = true
+feed_limit = 20
+minify_html = true
+
+# 主题相关配置
+[extra]
+# 导航栏菜单
+menu = [
+    { name = "首页", url = "/" },
+    { name = "科技", url = "/tech/" },
+    { name = "互联网", url = "/internet/" },
+    { name = "开源", url = "/open-source/" },
+    { name = "AI", url = "/ai/" },
+    { name = "生活", url = "/life/" },
+]
+
+# 侧边栏热门排行
+hot_posts = [
+    { title = "GitHub Pages绑定自定义域名完整实操，避坑指南", url = "/internet/github-pages-custom-domain/" },
+    { title = "Tauri v2跨端桌面应用开发入门，Rust前端混合方案", url = "/tech/tauri-v2-desktop-app/" },
+    { title = "App产品命名方法论：简洁、可注册商标的名字思路", url = "/life/app-naming-method/" },
+    { title = "DNS解析原理，tcpdump抓域名访问实操教程", url = "/tech/dns-tcpdump-tutorial/" },
+    { title = "静态站点选型对比：Zola、Hugo、VitePress", url = "/tech/static-site-comparison/" },
+]
+
+# 热门标签
+tags = ["TailwindCSS", "GitHub Pages", "Zola", "Rust", "抓包", "AI模型", "前端", "跨端"]
+# 分类需声明在默认语言的配置段内（Zola 0.22+ 要求）
+[languages.zh]
+taxonomies = [
+    { name = "tags", feed = false },
+]

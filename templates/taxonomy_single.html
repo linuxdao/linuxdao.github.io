@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ term.name }} - {{ config.title }}{% endblock title %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold mb-2">标签：{{ term.name }}</h1>
+    <p class="text-muted text-sm">共 {{ term.pages | length }} 篇文章</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    {% for page in term.pages %}
+    <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+      <a href="{{ page.permalink }}">
+        <img src="{{ page.extra.image | default(value='/images/id-1.jpg') }}" alt="{{ page.title }}" class="w-full h-40 object-cover">
+      </a>
+      <div class="p-4">
+        <h2 class="font-semibold hover:text-primary transition">
+          <a href="{{ page.permalink }}">{{ page.title }}</a>
+        </h2>
+        <p class="text-muted text-sm mt-2 text-ellipsis-2">{{ page.description }}</p>
+        <div class="flex items-center justify-between mt-3 text-xs text-muted">
+          <span>{{ page.date | date(format="%m-%d") }}</span>
+          <span><i class="fa fa-user-o mr-1"></i>{{ page.extra.author | default(value="编辑部") }}</span>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</main>
+{% endblock content %}
